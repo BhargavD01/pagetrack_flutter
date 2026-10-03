@@ -1,85 +1,214 @@
-# PageTrack — Premium Digital Library App
+PageTrack — Digital Library Book Issue & Return App
 
-A polished Flutter Material 3 prototype for a college library.
+Problem Statement
 
-## Requirements covered
+College libraries often require students to manually search for books, check their availability, keep track of issued books, and remember return dates. This can make the process inconvenient and difficult to manage.
 
-### UI / Widgets
-- Catalog discovery screen
-- Responsive GridView of books
-- Card-based book catalogue
-- Search by title, author, category
-- Book detail screen
-- My Issued Books screen using ListView
-- Real book cover images
-- Availability badges
-- Due dates and overdue warning states
-- Animated navigation between primary sections
+PageTrack is a Flutter-based digital library application designed to provide a simple and responsive way for students to browse a library catalog, search for books, issue available books, track due dates, and return issued books.
 
-### Styling / Theming
-- Material 3
-- Premium library-inspired navy / cream / gold visual system
-- Responsive desktop/tablet/mobile navigation
-- Hover treatment for book cards on web
-- Consistent cards, chips, badges and CTA styling
+The application also stores catalog and issue information locally so that the data remains available between app sessions.
 
-### Dart logic
-- `Book` model class
-- Encapsulated fields/state
-- `List<Book>` catalogue
-- computed `isOverdue` getter
-- JSON serialization with `Map<String, dynamic>`
-- async/await
+⸻
 
-### Local storage
-- SharedPreferences
-- JSON encoding/decoding
-- Issue / return state survives reloads
+Project Functionality
 
-## Image source
+PageTrack provides the following core functionality:
 
-Book covers are displayed using Open Library's Covers API with ISBN-based URLs.
+1. Book Catalog
 
-Open Library documents the public cover URL format:
-https://covers.openlibrary.org/b/isbn/<ISBN>-L.jpg
+The application displays a collection of library books containing:
 
-Open Library recommends using the cover URLs directly for public-facing pages and appreciates a courtesy link back to Open Library.
+* Book title
+* Author
+* Category
+* Availability status
+* Book cover
+* Description
+* ISBN
+* Publication year
+* Number of pages
 
-```
+Books are displayed using responsive cards in a GridView.
 
-## Exam demo flow
+2. Search & Filtering
 
-1. Open Discover.
-2. Show responsive catalog and real covers.
-3. Search for a title or author.
-4. Filter by category.
-5. Open a book.
-6. Explain metadata and availability.
-7. Issue the book.
-8. Return to My Books.
-9. Show due date.
-10. Return the book.
-11. Reload the application and demonstrate that state is persisted locally.
+Users can:
 
-## Architecture
+* Search books by title
+* Search books by author
+* Filter books by category
+* View the number of matching results
 
-`main.dart`
-→ Material 3 application theme
+The catalog updates dynamically as the user searches or changes the selected category.
 
-`library_shell.dart`
-→ application navigation, search state, issue/return actions
+3. Book Details
 
-`catalog_screen.dart`
-→ responsive catalogue and search/filter UI
+Selecting a book opens a dedicated Book Details screen containing:
 
-`book_detail_screen.dart`
-→ detailed book view and issue/return CTA
+* Book cover
+* Title
+* Author
+* Description
+* Category
+* Publication year
+* Number of pages
+* ISBN
+* Current availability
+* Issue/Return action
 
-`issued_books_screen.dart`
-→ active loans and overdue states
+4. Issue a Book
 
-`book.dart`
-→ model and serialization
+When an available book is issued:
 
-`storage_service.dart`
-→ SharedPreferences persistence and seed catalogue
+Available → Issued
+
+The application:
+
+* Updates the book’s availability
+* Generates a due date
+* Updates the catalog immediately
+* Adds the book to My Issued Books
+* Saves the updated information locally
+
+The default loan period is 14 days.
+
+5. My Issued Books
+
+The My Issued Books section displays all currently issued books.
+
+Users can see:
+
+* Book title
+* Author
+* Cover
+* Due date
+* Overdue status
+* Return button
+
+6. Overdue Detection
+
+The application automatically compares the book’s due date with the current date.
+
+If the due date has passed, the book is marked as Overdue.
+
+7. Return a Book
+
+When a user returns a book:
+
+Issued → Available
+
+The application:
+
+* Removes the issued status
+* Clears the due date
+* Updates the catalog
+* Removes the book from My Issued Books
+* Saves the updated data locally
+
+8. Local Data Storage
+
+PageTrack uses SharedPreferences for local persistence.
+
+Book information is converted into maps and JSON before being stored locally.
+
+When the application starts again, the saved data is loaded and reconstructed into Book objects.
+
+This allows the application to retain issue and return information between sessions.
+
+⸻
+
+Main Screens
+
+The application contains three primary user flows:
+
+1. Catalog
+    * Browse books
+    * Search and filter
+    * View availability
+2. Book Details
+    * View complete book information
+    * Issue or return a book
+3. My Issued Books
+    * View currently issued books
+    * Track due dates
+    * Identify overdue books
+    * Return books
+
+⸻
+
+Technology Used
+
+* Flutter
+* Dart
+* Material 3
+* SharedPreferences
+* JSON serialization
+* Responsive Flutter layouts
+
+⸻
+
+Project Architecture
+
+PageTrack
+│
+├── UI Layer
+│   ├── Catalog
+│   ├── Book Details
+│   └── My Issued Books
+│
+├── Data Model
+│   └── Book
+│
+└── Data Layer
+    └── StorageService
+        └── SharedPreferences
+
+Application Flow
+
+Book Model
+     ↓
+List<Book>
+     ↓
+LibraryShell
+     ↓
+Catalog / Book Details / My Issued Books
+     ↓
+Issue / Return
+     ↓
+setState()
+     ↓
+StorageService
+     ↓
+SharedPreferences
+
+⸻
+
+How to Run
+
+Make sure Flutter is installed and configured.
+
+Run the following commands from the project directory:
+
+flutter pub get
+flutter analyze
+flutter run -d chrome
+
+The application can also be configured for other supported Flutter platforms.
+
+⸻
+
+
+Conclusion
+
+PageTrack provides a complete digital library workflow from searching for a book → viewing its details → issuing the book → tracking the due date → returning the book.
+
+The application combines Flutter UI development, Dart programming concepts, responsive design, and local storage into a single offline-capable library management experience.
+
+screenshots
+
+<img width="1466" height="835" alt="Screenshot 2026-10-03 at 1 57 49 AM" src="https://github.com/user-attachments/assets/91c51833-1a6a-4a73-9cd8-263818be5caa" />
+<img width="1469" height="832" alt="Screenshot 2026-10-03 at 1 58 00 AM" src="https://github.com/user-attachments/assets/69266363-fd43-43e3-a395-37c39ce98ca2" />
+<img width="1470" height="837" alt="Screenshot 2026-10-03 at 1 58 08 AM" src="https://github.com/user-attachments/assets/0831ff55-ef6f-4330-8cd9-06eb45e4c1a3" />
+<img width="1470" height="831" alt="Screenshot 2026-10-03 at 1 58 24 AM" src="https://github.com/user-attachments/assets/79e08bec-03a7-4bf0-995d-606815c984b0" />
+<img width="1470" height="836" alt="Screenshot 2026-10-03 at 1 58 32 AM" src="https://github.com/user-attachments/assets/f816c0a4-dedb-431d-ae7a-089461b267dc" />
+<img width="699" height="618" alt="Screenshot 2026-10-03 at 2 31 01 AM" src="https://github.com/user-attachments/assets/f3b2a7b2-34b6-4d82-92a9-16f624d8a160" />
